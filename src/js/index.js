@@ -1,5 +1,7 @@
 // Global app controller
 import Search from './models/Search';
+import * as searchView from './views/searchView';
+import { elements, renderLoader, clearLoader } from './views/base';
 
 /**	Global state app
 	search object
@@ -12,23 +14,27 @@ import Search from './models/Search';
 
  const controlSearch = async() => {
  	// 1- get query from view
- 	const query = 'pizza';
+ 	const query = searchView.getInput();
 
  	if (query) {
  		//2- new search object and add to state
  		state.search = new Search(query);
 
  		//3- prepare ui for the results
-
+ 		searchView.clearInput();
+ 		searchView.clearResults();
+ 		renderLoader(elements.searchRes)
+ 		
  		//4- search for the recipes
  		await state.search.getResults();
 
  		//5- render results on ui
- 		console.log(state.search.result);
+ 		clearLoader();
+ 		searchView.renderResults(state.search.result);
  	}
  }
 
-document.querySelector('.search').addEventListener('submit', e =>{
+elements.searchForm.addEventListener('submit', e =>{
 	e.preventDefault();
 	controlSearch();
 });
