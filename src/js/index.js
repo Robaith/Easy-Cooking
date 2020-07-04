@@ -50,5 +50,34 @@ elements.searchResPages.addEventListener('click', e => {
 });
 
 //Recipe Controller
-const r = new Recipe(46956);
-r.getRecipe();
+const controlRecipe = async () => {
+    // Get ID from url
+    const id = window.location.hash.replace('#', '');
+
+    if (id) {
+        // Prepare UI for changes
+
+        // Highlight selected search item
+
+        // Create new recipe object
+        state.recipe = new Recipe(id);
+
+        try {
+            // Get recipe data and parse ingredients
+            await state.recipe.getRecipe();
+
+            // Calculate servings and time
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+    
+            // Render recipe
+            console.log(state.recipe);
+        } catch (err) {
+            console.log(err);
+            alert('Error processing recipe!');
+        }
+    }
+};
+ 
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
