@@ -61,6 +61,9 @@ const controlRecipe = async () => {
 
         // Create new recipe object
         state.recipe = new Recipe(id);
+        
+        //testing
+        window.r = state.recipe;
 
         try {
             // Get recipe data and parse ingredients
